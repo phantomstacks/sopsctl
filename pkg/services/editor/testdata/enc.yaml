@@ -1,0 +1,23 @@
+apiVersion: v1
+data:
+    DATA: ENC[AES256_GCM,data:Z3uB1ayGiXmGrG2W,iv:r3Wqajk+9h5aWDjWT+3qWe87UMnjYL3ZlByfeINK994=,tag:/NqhEoFlki86gzXOZY9mgw==,type:str]
+kind: Secret
+metadata:
+    name: big-3-frontend-development
+    namespace: big
+type: Opaque
+sops:
+    age:
+        - recipient: age1qnswq576pku84s2wyw4kr59ywvvdzua6crtdz0sf0l9udnje6c5snqfc2d
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSAyemxhMDRXN0U0Z3dYZU1I
+            VVBtWUE4MnJXcXA5Z1RsV3VHeFV0Wk5haDJVClpjUjZ1TWhLbDNOSWNYSEJkMVJW
+            d0JaRkFkLzlTVzl1SHI5M3grWDhHaVUKLS0tIC9YbHY5Qks4YlJkd3hzVEpxbzBP
+            cW5WY2RIMUN5RHFjTGJuKzR0c2FLWlEKlv81YjO3zspy1DeybBj+L2XYF8npkuy2
+            jSrLkWDzg+tLrQmwz5k7DDOa5n3zL5lFDERO8EBxlYRN7rKelda2ug==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2025-11-09T02:20:51Z"
+    mac: ENC[AES256_GCM,data:cz/wku69WJ7D2OfID/TWcM4Khv3xnOME/KJrtudkflkLcEK47JX0Hdy1ODAWDoL/ot1TT3UxXvE9jbuPcZPEBbJZFSyhjdwd2VF615C/MlwsuO9hCH8tSb6LYJe2wGDVUYx/JTUFqmf6TAu7e+RLe/6FiKgIf9ChucKg8DxSMR4=,iv:19icRVQLp+UqCYd1RHhTiIud0fPgkXzfIx6jT+yq7DY=,tag:7mnk5wlRJLxzDSrg+YYw0g==,type:str]
+    encrypted_regex: ^(data|stringData)$
+    version: 3.10.2
