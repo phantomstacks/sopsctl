@@ -15,7 +15,7 @@ import (
 	"phantom-flux/pkg/services/file"
 	"phantom-flux/pkg/services/helpers"
 	"phantom-flux/pkg/services/key"
-	"phantom-flux/pkg/services/key/storage"
+	"phantom-flux/pkg/services/storage"
 
 	"github.com/spf13/cobra"
 	"go.uber.org/dig"

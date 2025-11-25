@@ -3,7 +3,7 @@ package key
 import (
 	"phantom-flux/pkg/domain"
 	"phantom-flux/pkg/services/helpers"
-	"phantom-flux/pkg/services/key/storage"
+	"phantom-flux/pkg/services/storage"
 
 	"filippo.io/age"
 	"github.com/fatih/color"

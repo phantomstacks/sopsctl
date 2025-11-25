@@ -7,6 +7,8 @@ type CtxKeyPair struct {
 }
 
 type KeyStorage interface {
+	SetStorageMode(mode StorageMode) error
+	GetStorageMode() (StorageMode, error)
 	SavePrivateKey(key string, ctxName string) error
 	GetPrivateKey(ctxName string) (string, error)
 	ListContextsWithKeys() ([]string, error)
