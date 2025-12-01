@@ -143,6 +143,7 @@ func (g GlobalSopsKeyManager) AddKeyFromCluster(ctxName string, namespace string
 		if err != nil {
 			return "", err
 		}
+		return "Added sops key reference" + ": " + color.GreenString(ctxName) + "/" + color.GreenString(namespace) + "/" + color.GreenString(secretName) + ":(" + color.GreenString(secretKey) + ")", err
 	}
 	clusterKeyGetter, err := createClusterKeyGetterStrategy(ctxName, namespace, secretName, secretKey)
 	if err != nil {
