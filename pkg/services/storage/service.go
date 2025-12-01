@@ -18,6 +18,23 @@ type LocalUserKeyStorageService struct {
 	fileName string
 }
 
+func (l LocalUserKeyStorageService) SaveCtxReference(ctxName string, namespace string, secretName string, key string) error {
+	config := l.readConfigFromFileOrEmpty()
+	ctx := domain.NewReferenceCTX(namespace, secretName, key)
+
+	err := config.SaveCtx(ctxName, ctx)
+	return err
+}
+
+func (l LocalUserKeyStorageService) GetCtx(ctxName string) (*domain.CTX, error) {
+	config := l.readConfigFromFileOrEmpty()
+	ctx, err := config.GetCtx(ctxName)
+	if err != nil {
+		return nil, err
+	}
+	return ctx, nil
+}
+
 func (l LocalUserKeyStorageService) GetStorageMode() (domain.StorageMode, error) {
 	config := l.readConfigFromFileOrEmpty()
 	mode, err := config.GetStorageMode()
@@ -68,7 +85,7 @@ func (l LocalUserKeyStorageService) GetPrivateKey(ctxName string) (string, error
 	return config.GetPrivateKey(ctxName)
 }
 
-func (l LocalUserKeyStorageService) readConfigFromFileOrEmpty() domain.ConfigStorage {
+func (l LocalUserKeyStorageService) readConfigFromFileOrEmpty() *ConfigFile {
 	file, err := l.getAbsoluteFilePath()
 	if err != nil {
 		return newEmptyConfigFile(file)

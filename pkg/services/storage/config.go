@@ -4,30 +4,15 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"phantom-flux/pkg/domain"
 
 	"gopkg.in/yaml.v3"
 )
 
-type CTX struct {
-	PrivateKey string
-	Namespace  string
-	SecretName string
-	KeyName    string
-}
-
-func newEmptyCtx() *CTX {
-	return &CTX{
-		PrivateKey: "",
-		Namespace:  "",
-		SecretName: "",
-		KeyName:    "",
-	}
-}
-
 type ConfigFile struct {
 	StorageMode string
 	FilePath    string
-	Contexts    map[string]CTX
+	Contexts    map[string]domain.CTX
 }
 
 func (c *ConfigFile) SaveStorageMode(mode string) error {
@@ -84,22 +69,39 @@ func (c *ConfigFile) SaveConfigFile() error {
 func (c *ConfigFile) SetPrivateKey(key string, ctxName string) error {
 	ctx := c.getOrCreateCtx(ctxName)
 	ctx.PrivateKey = key
-	c.Contexts[ctxName] = ctx
+	c.Contexts[ctxName] = *ctx
 	return nil
 }
 
-func (c *ConfigFile) getOrCreateCtx(ctxName string) CTX {
+func (c *ConfigFile) getOrCreateCtx(ctxName string) *domain.CTX {
 	ctx, exists := c.Contexts[ctxName]
 	if !exists {
-		ctx = *newEmptyCtx()
+		ctx = *domain.NewEmptyCtx()
 		c.Contexts[ctxName] = ctx
 	}
-	return ctx
+	return &ctx
 }
 
 func (c *ConfigFile) GetPrivateKey(ctxName string) (string, error) {
 	ctx := c.getOrCreateCtx(ctxName)
 	return ctx.PrivateKey, nil
+}
+
+func (c *ConfigFile) GetCtx(name string) (*domain.CTX, error) {
+	ctx, exists := c.Contexts[name]
+	if !exists {
+		return nil, fmt.Errorf("context %s does not exist", name)
+	}
+	return &ctx, nil
+}
+
+func (c *ConfigFile) SaveCtx(ctxName string, ctx *domain.CTX) error {
+	c.Contexts[ctxName] = *ctx
+	err := c.SaveConfigFile()
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func newEmptyConfigFile(filePath string) *ConfigFile {
@@ -109,6 +111,6 @@ func newEmptyConfigFile(filePath string) *ConfigFile {
 	}
 	return &ConfigFile{
 		FilePath: filePath,
-		Contexts: make(map[string]CTX),
+		Contexts: make(map[string]domain.CTX),
 	}
 }

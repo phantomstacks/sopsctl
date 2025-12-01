@@ -7,11 +7,12 @@ func (receiver CommandId) ToString() string {
 }
 
 const (
-	SecretEdit    CommandId = "secret-edit"
-	SecretDecrypt CommandId = "secret-decrypt"
-	KeyAdd        CommandId = "key-add"
-	KeyList       CommandId = "key-list"
-	KeyRemove     CommandId = "key-remove"
+	SecretEdit     CommandId = "secret-edit"
+	SecretDecrypt  CommandId = "secret-decrypt"
+	KeyAdd         CommandId = "key-add"
+	KeyList        CommandId = "key-list"
+	KeyRemove      CommandId = "key-remove"
+	KeyStorageMode CommandId = "key-storage-mode"
 )
 
 type StorageMode string

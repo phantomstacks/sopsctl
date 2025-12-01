@@ -1,4 +1,4 @@
-package key
+package storage
 
 import (
 	"fmt"
@@ -13,12 +13,16 @@ type keyRootCmdOptions struct {
 	StorageMode domain.StorageMode
 }
 
-type KeyRootCmd struct {
+type KeyStorageModeCmd struct {
 	options *keyRootCmdOptions
 	storage domain.KeyStorage
 }
 
-func (k KeyRootCmd) UseOptions(cmd *cobra.Command, args []string) (domain.CommandExecutor, error) {
+func NewKeyStorageModeCmd(storage domain.KeyStorage) *KeyStorageModeCmd {
+	return &KeyStorageModeCmd{storage: storage}
+}
+
+func (k KeyStorageModeCmd) UseOptions(cmd *cobra.Command, args []string) (domain.CommandExecutor, error) {
 	storageModeStr, err := cmd.Flags().GetString(setStorageModeFlagName)
 	if err != nil {
 		return nil, err
@@ -30,11 +34,11 @@ func (k KeyRootCmd) UseOptions(cmd *cobra.Command, args []string) (domain.Comman
 	return k, nil
 }
 
-func (k KeyRootCmd) InitCmd(cmd *cobra.Command) {
+func (k KeyStorageModeCmd) InitCmd(cmd *cobra.Command) {
 	cmd.Flags().StringP(setStorageModeFlagName, "s", "file", "Storage mode for SOPS keys (local, in-cluster.)")
 }
 
-func (k KeyRootCmd) Execute() (string, error) {
+func (k KeyStorageModeCmd) Execute() (string, error) {
 	currentMode, err := k.storage.GetStorageMode()
 	if err != nil {
 		return "", err
