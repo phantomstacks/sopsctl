@@ -18,8 +18,8 @@ const (
 type StorageMode string
 
 const (
-	LocalStorageMode     StorageMode = "file"
-	InClusterStorageMode StorageMode = "in-cluster"
+	LocalStorageMode     StorageMode = "local"
+	InClusterStorageMode StorageMode = "cluster"
 )
 
 func (sm StorageMode) IsValid() bool {

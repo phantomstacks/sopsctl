@@ -2,6 +2,7 @@ package storage
 
 import (
 	"fmt"
+	"phantom-flux/pkg/cmd/help"
 	"phantom-flux/pkg/domain"
 
 	"github.com/spf13/cobra"
@@ -27,15 +28,24 @@ func (k KeyStorageModeCmd) UseOptions(cmd *cobra.Command, args []string) (domain
 	if err != nil {
 		return nil, err
 	}
+	if storageModeStr == "" {
+		return help.NewHelpExecutor(cmd), nil
+	}
+
+	sm := domain.StorageMode(storageModeStr)
+	if !sm.IsValid() {
+		return nil, fmt.Errorf("invalid storage mode: %s", storageModeStr)
+	}
+
 	options := &keyRootCmdOptions{
-		StorageMode: domain.StorageMode(storageModeStr),
+		StorageMode: sm,
 	}
 	k.options = options // to be used in Execute
 	return k, nil
 }
 
 func (k KeyStorageModeCmd) InitCmd(cmd *cobra.Command) {
-	cmd.Flags().StringP(setStorageModeFlagName, "s", "file", "Storage mode for SOPS keys (local, in-cluster.)")
+	cmd.Flags().StringP(setStorageModeFlagName, "s", "", "Storage mode for SOPS keys (local, cluster.)")
 }
 
 func (k KeyStorageModeCmd) Execute() (string, error) {
