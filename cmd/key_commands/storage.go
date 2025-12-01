@@ -17,5 +17,5 @@ var KeyStorageModeCmd = &cobra.Command{
 }
 
 func init() {
-	pkg.InitCobraCommand(domain.KeyStorageMode, KeyListCmd)
+	pkg.InitCobraCommand(domain.KeyStorageMode, KeyStorageModeCmd)
 }
