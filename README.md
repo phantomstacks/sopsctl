@@ -69,9 +69,20 @@ creation_rules:
     age: age1qnswq576pku84s2wyw4kr59ywvvdzua6crtdz0sf0l9udnje6c5snqfc2d
 ```
 
-### 3. Edit Encrypted Secrets
+### 3. Create and Manage Encrypted Secrets
 
 ```bash
+# Create an encrypted secret from literal values
+pflux secret create my-secret \
+  --from-literal=username=admin \
+  --from-literal=password=secret123 \
+  --cluster=production > secret.yaml
+
+# Create an encrypted secret from an environment file
+pflux secret create db-credentials \
+  --from-env-file=.env \
+  --cluster=production > db-secret.yaml
+
 # Edit an encrypted secret file
 pflux secret edit secrets.yaml --cluster=production
 
@@ -83,13 +94,14 @@ pflux secret decrypt secrets.yaml --cluster=production
 
 ### Global Flags
 
+All commands support the following global flag:
 - `--cluster, -c`: Specify the Kubernetes cluster context to use for key operations
 
 ### Key Management Commands
 
 #### `pflux key add`
 
-Add encryption keys from a Kubernetes cluster to local storage.
+Add encryption keys from a Kubernetes cluster to local storage. Retrieves age keys from a Kubernetes secret and stores them locally in `~/.pFlux/` for use with SOPS encryption/decryption.
 
 ```bash
 pflux key add [flags]
@@ -101,11 +113,16 @@ pflux key add [flags]
 - `--secret, -s`: The name of the secret containing the SOPS key (default: `sops-age`)
 - `--key, -k`: The key within the secret that holds the age key (default: `age.agekey`)
 
+**Note:** Either `--from-current-context` or `--cluster` must be specified.
+
 **Examples:**
 
 ```bash
 # Add keys from current context
 pflux key add --from-current-context
+
+# Add keys from specific cluster
+pflux key add --cluster=production
 
 # Add keys from specific cluster and custom secret location
 pflux key add --cluster=staging --namespace=encryption --secret=my-age-key
@@ -116,25 +133,118 @@ pflux key add --cluster=production --key=private.key
 
 #### `pflux key list`
 
-List all age keys stored locally.
+List all age keys stored locally in `~/.pFlux/`. Shows the cluster name and public key for each stored key.
 
 ```bash
+pflux key list [flags]
+```
+
+**Flags:**
+- `--show-sensitive`: Show private keys in the list output (use with caution)
+
+**Examples:**
+
+```bash
+# List all stored keys
 pflux key list
+
+# List keys including private keys
+pflux key list --show-sensitive
 ```
 
 #### `pflux key remove`
 
-Remove age keys from local storage.
+Remove age keys from local storage. Can remove keys for a specific cluster or all stored keys.
 
 ```bash
-pflux key remove [flags]
+pflux key remove [cluster-name] [flags]
+```
+
+**Flags:**
+- `--all`: Remove all SOPS keys from local storage
+
+**Examples:**
+
+```bash
+# Remove keys for specific cluster
+pflux key remove production
+
+# Remove all stored keys
+pflux key remove --all
+```
+
+#### `pflux key storage-mode`
+
+View and manage SOPS key storage modes. Controls how and where encryption keys are stored.
+
+```bash
+pflux key storage-mode [flags]
+```
+
+**Flags:**
+- `--set-storage-mode, -s`: Set storage mode for SOPS keys (options: `local`, `cluster`)
+
+**Examples:**
+
+```bash
+# View current storage mode
+pflux key storage-mode
+
+# Set storage mode to local
+pflux key storage-mode --set-storage-mode=local
+
+# Set storage mode to cluster
+pflux key storage-mode --set-storage-mode=cluster
 ```
 
 ### Secret Management Commands
 
+#### `pflux secret create`
+
+Create an encrypted Kubernetes secret from local files, directories, or literal values. This command mimics `kubectl create secret generic` but automatically encrypts the output using SOPS and age encryption. The secret is output as encrypted YAML that can be committed to version control.
+
+```bash
+pflux secret create NAME [flags]
+```
+
+**Flags:**
+- `--from-file strings`: Create secret from files or directories. Can specify `key=filepath` to set custom keys
+- `--from-literal stringArray`: Create secret from literal key=value pairs (e.g., `username=admin`)
+- `--from-env-file strings`: Create secret from environment files containing `KEY=value` lines
+- `--type string`: The type of secret to create (default: `Opaque`)
+- `--namespace, -n string`: Namespace for the secret (default: `default`)
+- `--append-hash`: Append a hash of the secret data to its name
+
+**Examples:**
+
+```bash
+# Create secret from literal values
+pflux secret create my-secret --from-literal=username=admin --from-literal=password=secret123
+
+# Create secret from files
+pflux secret create my-secret --from-file=ssh-privatekey=~/.ssh/id_rsa --from-file=ssh-publickey=~/.ssh/id_rsa.pub
+
+# Create secret from a directory (uses filenames as keys)
+pflux secret create my-secret --from-file=./config/
+
+# Create secret from environment file
+pflux secret create my-secret --from-env-file=.env
+
+# Create secret with custom namespace and type
+pflux secret create my-secret --from-literal=token=abc123 --namespace=production --type=kubernetes.io/service-account-token
+
+# Create secret with hash appended to name
+pflux secret create my-secret --from-literal=data=value --append-hash
+```
+
+**Notes:**
+- The `--from-env-file` flag cannot be combined with `--from-file` or `--from-literal`
+- Output is encrypted SOPS YAML that can be saved to a file: `pflux secret create my-secret --from-literal=key=value > secret.yaml`
+- Secret data is base64-encoded and then encrypted with SOPS
+
 #### `pflux secret edit`
 
-Edit encrypted secret files using your default editor with automatic encryption/decryption.
+Edit encrypted secret files using your default editor with automatic encryption/decryption. Provides a secure workflow where the file is temporarily decrypted, opened in an editor, then re-encrypted when you save.
 
 ```bash
 pflux secret edit [file] [flags]
@@ -142,7 +252,7 @@ pflux secret edit [file] [flags]
 
 **Flags:**
 - `--decode, -d`: Edit a decoded secret property without manually encrypting the entire file
-- `--k, -k`: Specify the key within the secret to decode and edit (used with `--decode`)
+- `--k, -k string`: Specify the key within the secret to decode and edit (used with `--decode`)
 - `--env, -e`: Specify environment variable that holds the decoded value
 
 **Examples:**
@@ -156,17 +266,26 @@ pflux secret edit secrets.yaml --cluster=production --decode --k=database-passwo
 
 # Edit single property (auto-detected if only one exists)
 pflux secret edit secrets.yaml --cluster=production --decode
+
+# Edit with environment variable
+pflux secret edit secrets.yaml --cluster=production --env
 ```
 
 **Workflow:**
 1. Decrypts the file using the cluster's private age key
 2. Opens the decrypted content in your system's default editor
-3. Re-encrypts the content after you save and close the editor
+3. After you save and close the editor, re-encrypts the content with the cluster's public key
 4. Atomically writes the encrypted content back to the original file
+
+**Editor Selection:**
+The command respects the following environment variables (in order of precedence):
+1. `VISUAL`
+2. `EDITOR`
+3. Default: `vi` (Unix) or `notepad` (Windows)
 
 #### `pflux secret decrypt`
 
-Decrypt a SOPS-encrypted file and output the result to stdout.
+Decrypt a SOPS-encrypted file and output the plaintext result to stdout. Useful for viewing encrypted files, piping to other commands, or extracting specific values.
 
 ```bash
 pflux secret decrypt <file> [flags]
@@ -180,7 +299,15 @@ pflux secret decrypt secrets.yaml --cluster=production
 
 # Decrypt and pipe to another command
 pflux secret decrypt secrets.yaml --cluster=production | grep password
+
+# Decrypt and save to a file
+pflux secret decrypt secrets.yaml --cluster=production > decrypted.yaml
+
+# Use with yq to extract specific values
+pflux secret decrypt secrets.yaml --cluster=production | yq .data.password
 ```
+
+**Security Note:** Be careful when decrypting files as the plaintext output may be sensitive. Avoid saving decrypted content to disk unnecessarily.
 
 ## ⚙️ Configuration
 
