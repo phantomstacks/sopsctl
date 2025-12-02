@@ -25,26 +25,19 @@ func newTestEditor(command string, args ...string) *editor {
 
 func TestNewDefaultEditor(t *testing.T) {
 	// Save original env vars
-	originalEditor := os.Getenv("EDITOR")
-	originalVisual := os.Getenv("VISUAL")
+	originalPfluxEditor := os.Getenv("PFLUX_EDITOR")
 
 	// Restore env vars after test
 	defer func() {
-		if originalEditor == "" {
-			os.Unsetenv("EDITOR")
+		if originalPfluxEditor == "" {
+			os.Unsetenv("PFLUX_EDITOR")
 		} else {
-			os.Setenv("EDITOR", originalEditor)
-		}
-		if originalVisual == "" {
-			os.Unsetenv("VISUAL")
-		} else {
-			os.Setenv("VISUAL", originalVisual)
+			os.Setenv("PFLUX_EDITOR", originalPfluxEditor)
 		}
 	}()
 
-	// Test with EDITOR set
-	os.Setenv("EDITOR", "nano")
-	os.Unsetenv("VISUAL")
+	// Test with PFLUX_EDITOR set to simple command
+	os.Setenv("PFLUX_EDITOR", "nano")
 
 	editorService := editorForTest()
 	if len(editorService.Args) != 1 || editorService.Args[0] != "nano" {
@@ -54,17 +47,16 @@ func TestNewDefaultEditor(t *testing.T) {
 		t.Errorf("Expected Shell to be false, got true")
 	}
 
-	// Test with VISUAL set (should take precedence)
-	os.Setenv("VISUAL", "code --wait")
+	// Test with command with spaces (should split on spaces)
+	os.Setenv("PFLUX_EDITOR", "code --wait")
 
 	editorService = editorForTest()
 	if len(editorService.Args) != 2 || editorService.Args[0] != "code" || editorService.Args[1] != "--wait" {
 		t.Errorf("Expected editorService args [code, --wait], got %v", editorService.Args)
 	}
 
-	// Test with complex editorService command that requires shell
-	os.Setenv("EDITOR", `emacs -nw --eval "(setq backup-inhibited t)"`)
-	os.Unsetenv("VISUAL")
+	// Test with complex editorService command that requires shell (contains quotes)
+	os.Setenv("PFLUX_EDITOR", `emacs -nw --eval "(setq backup-inhibited t)"`)
 
 	editorService = editorForTest()
 	if !editorService.Shell {
