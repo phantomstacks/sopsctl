@@ -1,19 +1,21 @@
 package create
 
 import (
+	"bytes"
 	"fmt"
 	"os"
 	"path/filepath"
 	"phantom-flux/pkg/services/utils"
 	"strings"
 
-	"gopkg.in/yaml.v3"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/validation"
 	"k8s.io/cli-runtime/pkg/genericiooptions"
+	"k8s.io/cli-runtime/pkg/printers"
 	kubectlcreate "k8s.io/kubectl/pkg/cmd/create"
 	cmdutil "k8s.io/kubectl/pkg/cmd/util"
+	"k8s.io/kubectl/pkg/scheme"
 	"k8s.io/kubectl/pkg/util"
 	"k8s.io/kubectl/pkg/util/hash"
 	"k8s.io/kubectl/pkg/util/i18n"
@@ -104,8 +106,11 @@ func (s *SecretCreateCmd) Execute() (string, error) {
 		return "", err
 	}
 
-	//convert secret to byte array
-	secretBytes, err := yaml.Marshal(secret)
+	// Convert secret to YAML using Kubernetes printer (proper formatting with capitalized fields)
+	secretBytes, err := s.marshalSecretToYAML(secret)
+	if err != nil {
+		return "", fmt.Errorf("failed to marshal secret: %w", err)
+	}
 
 	encryptedSecret, err := s.encryptionService.EncryptData(secretBytes, publicKey)
 	if err != nil {
@@ -113,6 +118,21 @@ func (s *SecretCreateCmd) Execute() (string, error) {
 	}
 
 	return string(encryptedSecret), nil
+}
+
+// marshalSecretToYAML uses the Kubernetes YAML printer to properly format the secret
+// This ensures correct field names (apiVersion, not apiversion) like kubectl does
+func (s *SecretCreateCmd) marshalSecretToYAML(secret *corev1.Secret) ([]byte, error) {
+	// Create a YAML printer with the Kubernetes scheme
+	printer := printers.NewTypeSetter(scheme.Scheme).ToPrinter(&printers.YAMLPrinter{})
+
+	// Print to a buffer
+	var buf bytes.Buffer
+	if err := printer.PrintObj(secret, &buf); err != nil {
+		return nil, err
+	}
+
+	return buf.Bytes(), nil
 }
 
 func (s *SecretCreateCmd) Validate() error {
