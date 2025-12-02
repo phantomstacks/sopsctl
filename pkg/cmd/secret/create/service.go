@@ -69,12 +69,19 @@ func (s *SecretCreateCmd) UseOptions(cmd *cobra.Command, args []string) (domain.
 	}
 	s.Name = name
 
-	// Get namespace from flags or use default
+	// Get all flag values (flags have been parsed by cobra before UseOptions is called)
 	namespace, _ := cmd.Flags().GetString("namespace")
 	if namespace == "" {
 		namespace = "default"
 	}
 	s.Namespace = namespace
+
+	// Get the secret creation source flags
+	s.FileSources, _ = cmd.Flags().GetStringSlice("from-file")
+	s.LiteralSources, _ = cmd.Flags().GetStringArray("from-literal")
+	s.EnvFileSources, _ = cmd.Flags().GetStringSlice("from-env-file")
+	s.Type, _ = cmd.Flags().GetString("type")
+	s.AppendHash, _ = cmd.Flags().GetBool("append-hash")
 
 	return s, nil
 }
