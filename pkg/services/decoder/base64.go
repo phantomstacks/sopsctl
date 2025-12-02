@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"phantom-flux/pkg/domain"
+	"strings"
 
 	"sigs.k8s.io/yaml"
 )
@@ -24,14 +25,15 @@ func (e Base64Decoder) EditDecodedFile(secretFile []byte, valueKey string) ([]by
 	if isNoData {
 		return nil, nil, fmt.Errorf("did not find data for key %s in secret", valueKey)
 	}
-	valueData := secret.Data[valueKey]
+	valueData := strings.TrimSpace(secret.Data[valueKey])
 
 	restoreFunc := e.restoreEncodedFile(*secret, valueKey)
 
-	decodedValue, err := base64.RawStdEncoding.DecodeString(valueData)
-	if err != nil {
-		return nil, nil, fmt.Errorf("failed to decode base64 content for key %s: %w", valueKey, err)
+	decodedValue, _ := base64.RawStdEncoding.DecodeString(valueData)
+	if decodedValue == nil || len(decodedValue) == 0 {
+		return nil, nil, fmt.Errorf("failed to decode base64 value for key %s", valueKey)
 	}
+
 	return decodedValue, restoreFunc, nil
 }
 

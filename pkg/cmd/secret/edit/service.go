@@ -57,10 +57,14 @@ func (e SecretEditCmd) Execute() (string, error) {
 	if err != nil {
 		return "", err
 	}
-
+	copyOfDecrypted := &decrypted
 	editedContent, err := e.editInTempFile(decrypted)
 	if err != nil {
 		return "", err
+	}
+	// If no changes were made, exit early
+	if string(editedContent) == string(*copyOfDecrypted) {
+		return "No changes made to the file", nil
 	}
 
 	if err := e.encryptAndSave(editedContent, reEncodeFunc); err != nil {
