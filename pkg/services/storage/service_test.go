@@ -14,7 +14,7 @@ func TestNewLocaUserKeyStorage(t *testing.T) {
 func TestLocalUserKeyStorageService_SavePrivateKey_GetPrivateKey(t *testing.T) {
 	uut := NewLocalUserKeyStorageService()
 	key := "some-key"
-	ctxName := "some-ctx"
+	ctxName := "some-CTX"
 	// Act
 	err := uut.SavePrivateKey(
 		key,
@@ -39,10 +39,10 @@ func TestLocalUserKeyStorageService_SavePrivateKey_GetPrivateKey(t *testing.T) {
 func TestLocalUserKeyStorageService_SaveMultiplePrivateKey_GetPrivateKey(t *testing.T) {
 	uut := NewLocalUserKeyStorageService()
 	key := "some-key"
-	ctxName := "some-ctx"
+	ctxName := "some-CTX"
 
 	secondKey := "another-key"
-	secondCtxName := "another-ctx"
+	secondCtxName := "another-CTX"
 	// Act
 	err := uut.SavePrivateKey(
 		key,

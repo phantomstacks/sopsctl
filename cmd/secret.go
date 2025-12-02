@@ -25,4 +25,5 @@ func init() {
 	rootCmd.AddCommand(secretCmd)
 	secretCmd.AddCommand(secret_commands.SecretDecryptCmd)
 	secretCmd.AddCommand(secret_commands.SecretEditCmd)
+	secretCmd.AddCommand(secret_commands.SecretCreateCmd)
 }

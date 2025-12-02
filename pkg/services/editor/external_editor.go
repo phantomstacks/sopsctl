@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	defaultEditor = "vi"
+	defaultEditor = "nano"
 	windowsEditor = "notepad"
 )
 
@@ -49,7 +49,7 @@ func NewEditor(command string, args ...string) domain.UserEditorService {
 }
 
 func getEditorFromEnv() ([]string, bool) {
-	for _, env := range []string{"VISUAL", "EDITOR"} {
+	for _, env := range []string{"PFLUX_EDITOR"} {
 		if editor := os.Getenv(env); editor != "" {
 			if !strings.Contains(editor, " ") {
 				return []string{editor}, false

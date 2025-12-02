@@ -30,4 +30,5 @@ func init() {
 	keyCmd.AddCommand(key_commands.KeyAddCmd)
 	keyCmd.AddCommand(key_commands.KeyListCmd)
 	keyCmd.AddCommand(key_commands.RemoveCmd)
+	keyCmd.AddCommand(key_commands.KeyStorageModeCmd)
 }

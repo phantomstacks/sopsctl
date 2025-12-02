@@ -16,3 +16,8 @@ type CommandBuilder interface {
 type CommandFactory interface {
 	GetCommandBuilder(cmd CommandId) CommandBuilder
 }
+
+type CommandComponent interface {
+	CommandBuilder
+	CommandExecutor
+}
