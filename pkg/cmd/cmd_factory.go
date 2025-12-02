@@ -15,6 +15,7 @@ type CommandFactoryParams struct {
 	SecretEditCmdBuilder     domain.CommandBuilder `name:"secret-edit"`
 	SecretDecryptCmdBuilder  domain.CommandBuilder `name:"secret-decrypt"`
 	KeyStorageModeCmdBuilder domain.CommandBuilder `name:"key-storage-mode"`
+	SecretCreateCmdBuilder   domain.CommandBuilder `name:"secret-create"`
 }
 
 type CommandFactory struct {
@@ -24,6 +25,7 @@ type CommandFactory struct {
 	keyStorageModeCmdBuilder domain.CommandBuilder
 	secretEditCmdBuilder     domain.CommandBuilder
 	secretDecryptCmdBuilder  domain.CommandBuilder
+	secretCreateCmdBuilder   domain.CommandBuilder
 }
 
 func NewCommandFactory(params CommandFactoryParams) *CommandFactory {
@@ -34,6 +36,7 @@ func NewCommandFactory(params CommandFactoryParams) *CommandFactory {
 		keyStorageModeCmdBuilder: params.KeyStorageModeCmdBuilder,
 		secretEditCmdBuilder:     params.SecretEditCmdBuilder,
 		secretDecryptCmdBuilder:  params.SecretDecryptCmdBuilder,
+		secretCreateCmdBuilder:   params.SecretCreateCmdBuilder,
 	}
 }
 
@@ -49,6 +52,8 @@ func (cf *CommandFactory) GetCommandBuilder(cmd domain.CommandId) domain.Command
 		return cf.secretEditCmdBuilder
 	case domain.SecretDecrypt:
 		return cf.secretDecryptCmdBuilder
+	case domain.SecretCreate:
+		return cf.secretCreateCmdBuilder
 	case domain.KeyStorageMode:
 		return cf.keyStorageModeCmdBuilder
 

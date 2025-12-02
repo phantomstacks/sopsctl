@@ -7,6 +7,7 @@ import (
 	"phantom-flux/pkg/cmd/key/list"
 	"phantom-flux/pkg/cmd/key/remove"
 	storage_mode "phantom-flux/pkg/cmd/key/storage"
+	"phantom-flux/pkg/cmd/secret/create"
 	"phantom-flux/pkg/cmd/secret/decrypt"
 	"phantom-flux/pkg/cmd/secret/edit"
 	"phantom-flux/pkg/domain"
@@ -66,6 +67,10 @@ func GetDigServiceContainer() *dig.Container {
 		container.Provide(func(skm domain.SopsKeyManager) domain.CommandBuilder {
 			return remove.NewKeyRemoveCmd(skm)
 		}, dig.Name(domain.KeyRemove.ToString())),
+
+		container.Provide(func() domain.CommandBuilder {
+			return create.NewSecretCreateCmd()
+		}, dig.Name(domain.SecretCreate.ToString())),
 
 		container.Provide(func(skm domain.KeyStorage) domain.CommandBuilder {
 			return storage_mode.NewKeyStorageModeCmd(skm)
