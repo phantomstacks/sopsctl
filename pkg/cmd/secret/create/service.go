@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"phantom-flux/pkg/services/utils"
 	"strings"
 
+	"gopkg.in/yaml.v3"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/validation"
@@ -31,18 +33,33 @@ type SecretCreateCmd struct {
 	EnvFileSources []string
 	AppendHash     bool
 	Namespace      string
+	Cluster        string
 
 	// IOStreams for output
-	IOStreams genericiooptions.IOStreams
+	IOStreams         genericiooptions.IOStreams
+	encryptionService domain.EncryptionService
+	sopsKeyManager    domain.SopsKeyManager
 }
 
-func NewSecretCreateCmd(ioStreams genericiooptions.IOStreams) *SecretCreateCmd {
+func NewSecretCreateCmd(es domain.EncryptionService, skm domain.SopsKeyManager) *SecretCreateCmd {
 	return &SecretCreateCmd{
-		IOStreams: ioStreams,
+		encryptionService: es,
+		sopsKeyManager:    skm,
 	}
 }
 
 func (s *SecretCreateCmd) UseOptions(cmd *cobra.Command, args []string) (domain.CommandExecutor, error) {
+	s.IOStreams = genericiooptions.IOStreams{
+		In:     cmd.InOrStdin(),
+		Out:    cmd.OutOrStdout(),
+		ErrOut: cmd.ErrOrStderr(),
+	}
+	flags, err := utils.UseGlobalFlags(cmd)
+	if err != nil {
+		return nil, err
+	}
+	s.Cluster = flags.Cluster
+
 	// Parse the secret name from args
 	name, err := kubectlcreate.NameFromCommandArgs(cmd, args)
 	if err != nil {
@@ -82,19 +99,20 @@ func (s *SecretCreateCmd) Execute() (string, error) {
 		return "", fmt.Errorf("failed to create secret: %w", err)
 	}
 
-	// TODO: Encrypt the secret here
-	// encryptedSecret, err := s.encryptSecret(secret)
-	// if err != nil {
-	//     return "", fmt.Errorf("failed to encrypt secret: %w", err)
-	// }
-
-	// For now, just return the unencrypted secret as YAML/JSON
-	output, err := s.formatSecret(secret)
+	publicKey, err := s.sopsKeyManager.GetPublicKey(s.Cluster)
 	if err != nil {
-		return "", fmt.Errorf("failed to format secret: %w", err)
+		return "", err
 	}
 
-	return output, nil
+	//convert secret to byte array
+	secretBytes, err := yaml.Marshal(secret)
+
+	encryptedSecret, err := s.encryptionService.EncryptData(secretBytes, publicKey)
+	if err != nil {
+		return "", fmt.Errorf("failed to encrypt secret: %w", err)
+	}
+
+	return string(encryptedSecret), nil
 }
 
 func (s *SecretCreateCmd) Validate() error {
@@ -136,13 +154,6 @@ func (s *SecretCreateCmd) createSecret() (*corev1.Secret, error) {
 	}
 
 	return secret, nil
-}
-
-// formatSecret converts the secret to YAML format for output
-func (s *SecretCreateCmd) formatSecret(secret *corev1.Secret) (string, error) {
-	// TODO: Format as YAML or JSON
-	// For now, return a simple string representation
-	return fmt.Sprintf("Secret created: %s/%s", secret.Namespace, secret.Name), nil
 }
 
 // Helper functions copied from kubectl's create_secret.go
