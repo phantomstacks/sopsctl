@@ -2,6 +2,7 @@ package pkg
 
 import (
 	"fmt"
+	"os"
 	command "phantom-flux/pkg/cmd"
 	"phantom-flux/pkg/cmd/key/add"
 	"phantom-flux/pkg/cmd/key/list"
@@ -21,6 +22,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"go.uber.org/dig"
+	"k8s.io/cli-runtime/pkg/genericiooptions"
 )
 
 func panicOnError(errs []error) {
@@ -69,7 +71,12 @@ func GetDigServiceContainer() *dig.Container {
 		}, dig.Name(domain.KeyRemove.ToString())),
 
 		container.Provide(func() domain.CommandBuilder {
-			return create.NewSecretCreateCmd()
+			ioStreams := genericiooptions.IOStreams{
+				In:     os.Stdin,
+				Out:    os.Stdout,
+				ErrOut: os.Stderr,
+			}
+			return create.NewSecretCreateCmd(ioStreams)
 		}, dig.Name(domain.SecretCreate.ToString())),
 
 		container.Provide(func(skm domain.KeyStorage) domain.CommandBuilder {
