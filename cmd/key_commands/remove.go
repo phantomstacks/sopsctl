@@ -8,7 +8,7 @@ import (
 )
 
 var RemoveCmd = &cobra.Command{
-	Use:   "remove",
+	Use:   "remove-key",
 	Short: "Remove SOPS keys",
 	Long:  `Remove SOPS keys from local storage.`,
 	Run: func(cmd *cobra.Command, args []string) {

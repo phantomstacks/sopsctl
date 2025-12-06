@@ -8,7 +8,7 @@ import (
 )
 
 var KeyAddCmd = &cobra.Command{
-	Use:   "add",
+	Use:   "add-key",
 	Short: "Add SOPS keys to a file",
 	Long: `Add SOPS keys to a file. You can specify the Kubernetes context, namespace, secret name, and key name.
 			

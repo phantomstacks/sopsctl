@@ -8,7 +8,7 @@ import (
 )
 
 var KeyListCmd = &cobra.Command{
-	Use:   "list",
+	Use:   "list-keys",
 	Short: "List SOPS keys",
 	Long:  `List all SOPS keys stored locally.`,
 	Run: func(cmd *cobra.Command, args []string) {
