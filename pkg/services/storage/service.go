@@ -10,7 +10,7 @@ import (
 
 func NewLocalUserKeyStorageService() *LocalUserKeyStorageService {
 	l := &LocalUserKeyStorageService{}
-	l.fileName = "pflux-config.yaml"
+	l.fileName = "sopsctl-config.yaml"
 	return l
 }
 
@@ -109,6 +109,6 @@ func (l LocalUserKeyStorageService) getAbsoluteFilePath() (string, error) {
 	if hd == "" {
 		return "", nil
 	}
-	absFilePath := hd + "/.pflux/" + l.fileName
+	absFilePath := hd + "/.sopsctl/" + l.fileName
 	return absFilePath, nil
 }

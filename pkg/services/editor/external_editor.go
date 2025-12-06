@@ -49,7 +49,7 @@ func NewEditor(command string, args ...string) domain.UserEditorService {
 }
 
 func getEditorFromEnv() ([]string, bool) {
-	for _, env := range []string{"PFLUX_EDITOR"} {
+	for _, env := range []string{"SOPSCTL_EDITOR"} {
 		if editor := os.Getenv(env); editor != "" {
 			if !strings.Contains(editor, " ") {
 				return []string{editor}, false

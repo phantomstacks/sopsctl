@@ -1,6 +1,6 @@
 # Editor Package
 
-A simple Go package for launching editors from CLI applications, inspired by kubectl's editor implementation. Perfect for creating commands like `pflux edit secret` that need to pause execution while the user edits a file.
+A simple Go package for launching editors from CLI applications, inspired by kubectl's editor implementation. Perfect for creating commands like `sopsctl edit secret` that need to pause execution while the user edits a file.
 
 ## Features
 
@@ -98,14 +98,14 @@ The package respects standard Unix editor environment variables:
 - **Commands with arguments**: `code --wait`, `emacs -nw`
 - **Complex shell commands**: `emacs -nw --eval "(setq backup-inhibited t)"`
 
-## Integration with pflux
+## Integration with sopsctl
 
-For your `pflux edit secret` command:
+For your `sopsctl edit secret` command:
 
 ```go
 func editSecretCommand(cmd *cobra.Command, args []string) error {
     if len(args) != 1 {
-        return fmt.Errorf("usage: pflux edit secret <file>")
+        return fmt.Errorf("usage: sopsctl edit secret <file>")
     }
     
     filename := args[0]
@@ -131,7 +131,7 @@ func editSOPSSecret(filename string, ed *editor.Editor) error {
     }
     
     // Edit in temp file
-    modified, cleanup, err := ed.EditTempFile("pflux-secret-", ".yaml", decrypted)
+    modified, cleanup, err := ed.EditTempFile("sopsctl-secret-", ".yaml", decrypted)
     if err != nil {
         return err
     }

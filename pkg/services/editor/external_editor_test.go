@@ -3,6 +3,7 @@ package editor
 import (
 	"bytes"
 	"os"
+	"phantom-flux/pkg/domain"
 	"strings"
 	"testing"
 )
@@ -25,19 +26,19 @@ func newTestEditor(command string, args ...string) *editor {
 
 func TestNewDefaultEditor(t *testing.T) {
 	// Save original env vars
-	originalPfluxEditor := os.Getenv("PFLUX_EDITOR")
+	originalSopsctlEditor := os.Getenv(domain.EditorEnvName)
 
 	// Restore env vars after test
 	defer func() {
-		if originalPfluxEditor == "" {
-			os.Unsetenv("PFLUX_EDITOR")
+		if originalSopsctlEditor == "" {
+			os.Unsetenv(domain.EditorEnvName)
 		} else {
-			os.Setenv("PFLUX_EDITOR", originalPfluxEditor)
+			os.Setenv(domain.EditorEnvName, originalSopsctlEditor)
 		}
 	}()
 
-	// Test with PFLUX_EDITOR set to simple command
-	os.Setenv("PFLUX_EDITOR", "nano")
+	// Test with SOPSCTL_EDITOR set to simple command
+	os.Setenv(domain.EditorEnvName, "nano")
 
 	editorService := editorForTest()
 	if len(editorService.Args) != 1 || editorService.Args[0] != "nano" {
@@ -48,7 +49,7 @@ func TestNewDefaultEditor(t *testing.T) {
 	}
 
 	// Test with command with spaces (should split on spaces)
-	os.Setenv("PFLUX_EDITOR", "code --wait")
+	os.Setenv(domain.EditorEnvName, "code --wait")
 
 	editorService = editorForTest()
 	if len(editorService.Args) != 2 || editorService.Args[0] != "code" || editorService.Args[1] != "--wait" {
@@ -56,7 +57,7 @@ func TestNewDefaultEditor(t *testing.T) {
 	}
 
 	// Test with complex editorService command that requires shell (contains quotes)
-	os.Setenv("PFLUX_EDITOR", `emacs -nw --eval "(setq backup-inhibited t)"`)
+	os.Setenv(domain.EditorEnvName, `emacs -nw --eval "(setq backup-inhibited t)"`)
 
 	editorService = editorForTest()
 	if !editorService.Shell {

@@ -30,3 +30,5 @@ func (sm StorageMode) IsValid() bool {
 func (sm StorageMode) ToString() string {
 	return string(sm)
 }
+
+const EditorEnvName = "SOPSCTL_EDITOR"

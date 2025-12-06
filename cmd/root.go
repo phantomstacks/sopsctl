@@ -15,7 +15,7 @@ var rootCmd = &cobra.Command{
 	Long: `Phantom Flux is a CLI tool for managing encrypted configurations using age keys and SOPS in a Kubernetes cluster.
 
 Features:
-  - Age key management with secure storage in ~/.pFlux
+  - Age key management with secure storage in ~/.sopsctl
   - SOPS integration for encrypted YAML/JSON files
   - Interactive text editor (use 'sopsctl edit' command)
   - Easy key generation and import
