@@ -407,6 +407,3 @@ go test ./...
 - [Age](https://age-encryption.org/) - Simple, modern encryption
 - [Flux](https://fluxcd.io/) - GitOps toolkit for Kubernetes
 
----
-
-**Made with ❤️ for secure GitOps workflows**

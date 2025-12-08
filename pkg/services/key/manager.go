@@ -1,9 +1,9 @@
 package key
 
 import (
-	"phantom-flux/pkg/domain"
-	"phantom-flux/pkg/services/helpers"
-	"phantom-flux/pkg/services/storage"
+	"sopsctl/pkg/domain"
+	"sopsctl/pkg/services/helpers"
+	"sopsctl/pkg/services/storage"
 
 	"filippo.io/age"
 	"github.com/fatih/color"

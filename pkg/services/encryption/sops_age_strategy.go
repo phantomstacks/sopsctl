@@ -2,7 +2,7 @@ package encryption
 
 import (
 	"fmt"
-	"phantom-flux/pkg/domain"
+	"sopsctl/pkg/domain"
 
 	"filippo.io/age"
 	"github.com/getsops/sops/v3"

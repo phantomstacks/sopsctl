@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"phantom-flux/pkg/domain"
+	"sopsctl/pkg/domain"
 
 	"go.uber.org/dig"
 )

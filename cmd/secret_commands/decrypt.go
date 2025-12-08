@@ -1,8 +1,8 @@
 package secret_commands
 
 import (
-	"phantom-flux/pkg"
-	"phantom-flux/pkg/domain"
+	"sopsctl/pkg"
+	"sopsctl/pkg/domain"
 
 	"github.com/spf13/cobra"
 )
@@ -20,7 +20,7 @@ YAML formatted files and requires a valid cluster context to retrieve the correc
 decryption key.
 
 Example:
-  phantom-flux secret decrypt secret.yaml --cluster=production`,
+  sopsctl secret decrypt secret.yaml --cluster=production`,
 	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		pkg.ExecuteCobraCommand(domain.SecretDecrypt, cmd, args)

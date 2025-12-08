@@ -2,9 +2,9 @@ package edit
 
 import (
 	"fmt"
-	"phantom-flux/pkg/domain"
-	"phantom-flux/pkg/services/file"
-	"phantom-flux/pkg/services/utils"
+	"sopsctl/pkg/domain"
+	"sopsctl/pkg/services/file"
+	"sopsctl/pkg/services/utils"
 
 	"github.com/spf13/cobra"
 )

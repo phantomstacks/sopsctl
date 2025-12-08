@@ -3,7 +3,7 @@ package decoder
 import (
 	"encoding/base64"
 	"fmt"
-	"phantom-flux/pkg/domain"
+	"sopsctl/pkg/domain"
 	"strings"
 
 	"sigs.k8s.io/yaml"

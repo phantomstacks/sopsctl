@@ -1,8 +1,8 @@
 package secret_commands
 
 import (
-	"phantom-flux/pkg"
-	"phantom-flux/pkg/domain"
+	"sopsctl/pkg"
+	"sopsctl/pkg/domain"
 
 	"github.com/spf13/cobra"
 )
@@ -23,7 +23,7 @@ temporary file during editing. The command ensures data integrity through atomic
 file operations.
 
 Example:
-  phantom-flux secret edit secrets.yaml --cluster=production`,
+  sopsctl secret edit secrets.yaml --cluster=production`,
 	Run: func(cmd *cobra.Command, args []string) {
 		pkg.ExecuteCobraCommand(domain.SecretEdit, cmd, args)
 	},

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"phantom-flux/pkg/services/helpers"
+	"sopsctl/pkg/services/helpers"
 )
 
 type WriterService struct {
@@ -15,7 +15,7 @@ func NewFileService() *WriterService {
 }
 
 func (s *WriterService) CreateTempFile(decrypted []byte) (string, func(), error) {
-	tempDir := filepath.Join(os.TempDir(), "phantom-flux-edit-"+helpers.RandomString(10))
+	tempDir := filepath.Join(os.TempDir(), "sopsctl-edit-"+helpers.RandomString(10))
 	cleanup := func() {
 		//if not excised, ignore errors
 		if cleanupErr := os.RemoveAll(tempDir); cleanupErr != nil {

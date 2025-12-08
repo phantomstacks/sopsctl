@@ -3,8 +3,8 @@ package cmd
 
 import (
 	"os"
-	"phantom-flux/cmd/key_commands"
-	"phantom-flux/cmd/secret_commands"
+	"sopsctl/cmd/key_commands"
+	"sopsctl/cmd/secret_commands"
 
 	"github.com/spf13/cobra"
 )

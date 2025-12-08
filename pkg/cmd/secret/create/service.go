@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"phantom-flux/pkg/services/utils"
+	"sopsctl/pkg/services/utils"
 	"strings"
 
 	corev1 "k8s.io/api/core/v1"
@@ -20,7 +20,7 @@ import (
 	"k8s.io/kubectl/pkg/util/hash"
 	"k8s.io/kubectl/pkg/util/i18n"
 
-	"phantom-flux/pkg/domain"
+	"sopsctl/pkg/domain"
 
 	"github.com/spf13/cobra"
 )

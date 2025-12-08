@@ -1,8 +1,8 @@
 package key_commands
 
 import (
-	"phantom-flux/pkg"
-	"phantom-flux/pkg/domain"
+	"sopsctl/pkg"
+	"sopsctl/pkg/domain"
 
 	"github.com/spf13/cobra"
 )

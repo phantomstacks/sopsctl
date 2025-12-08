@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"phantom-flux/pkg/domain"
+	"sopsctl/pkg/domain"
 
 	"gopkg.in/yaml.v3"
 )

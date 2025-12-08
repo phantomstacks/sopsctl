@@ -1,4 +1,4 @@
-module phantom-flux
+module sopsctl
 
 go 1.25.0
 
