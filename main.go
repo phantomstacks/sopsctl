@@ -3,7 +3,7 @@ Copyright © 2025 NAME HERE <EMAIL ADDRESS>
 */
 package main
 
-import "phantom-flux/cmd"
+import "sopsctl/cmd"
 
 func main() {
 	cmd.Execute()

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"phantom-flux/pkg/services/helpers"
+	"sopsctl/pkg/services/helpers"
 
 	"github.com/spf13/cobra"
 )

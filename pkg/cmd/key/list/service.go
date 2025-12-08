@@ -2,7 +2,7 @@ package list
 
 import (
 	"fmt"
-	"phantom-flux/pkg/domain"
+	"sopsctl/pkg/domain"
 
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"

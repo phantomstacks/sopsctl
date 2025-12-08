@@ -3,7 +3,7 @@ package key
 import (
 	"context"
 	"fmt"
-	"phantom-flux/pkg/domain"
+	"sopsctl/pkg/domain"
 	"strings"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"

@@ -6,8 +6,8 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"phantom-flux/pkg/domain"
 	"runtime"
+	"sopsctl/pkg/domain"
 	"strings"
 )
 

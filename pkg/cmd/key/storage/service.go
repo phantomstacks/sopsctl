@@ -2,8 +2,8 @@ package storage
 
 import (
 	"fmt"
-	"phantom-flux/pkg/cmd/help"
-	"phantom-flux/pkg/domain"
+	"sopsctl/pkg/cmd/help"
+	"sopsctl/pkg/domain"
 
 	"github.com/spf13/cobra"
 )

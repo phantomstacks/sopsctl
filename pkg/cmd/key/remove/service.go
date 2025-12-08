@@ -2,8 +2,8 @@ package remove
 
 import (
 	"fmt"
-	"phantom-flux/pkg/domain"
 	"slices"
+	"sopsctl/pkg/domain"
 
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"

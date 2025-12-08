@@ -22,7 +22,7 @@ import (
     "fmt"
     "log"
     
-    "github.com/your-org/phantom-flux/pkg/editor"
+    "github.com/your-org/sopsctl/pkg/editor"
 )
 
 func main() {

@@ -2,7 +2,7 @@ package decoder
 
 import (
 	"encoding/base64"
-	"phantom-flux/pkg/domain"
+	"sopsctl/pkg/domain"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

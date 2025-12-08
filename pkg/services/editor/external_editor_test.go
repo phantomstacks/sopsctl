@@ -3,7 +3,7 @@ package editor
 import (
 	"bytes"
 	"os"
-	"phantom-flux/pkg/domain"
+	"sopsctl/pkg/domain"
 	"strings"
 	"testing"
 )

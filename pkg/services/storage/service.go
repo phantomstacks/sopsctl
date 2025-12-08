@@ -2,7 +2,7 @@ package storage
 
 import (
 	"os"
-	"phantom-flux/pkg/domain"
+	"sopsctl/pkg/domain"
 
 	"gopkg.in/yaml.v3"
 	"k8s.io/client-go/util/homedir"

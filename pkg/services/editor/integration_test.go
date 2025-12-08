@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"os"
 	"path/filepath"
-	"phantom-flux/pkg/services/encryption"
+	"sopsctl/pkg/services/encryption"
 	"strings"
 	"testing"
 )
