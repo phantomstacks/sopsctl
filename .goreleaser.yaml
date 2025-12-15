@@ -53,9 +53,6 @@ sboms:
     artifacts: source
     documents:
       - "{{ .ProjectName }}_{{ .Version }}_sbom.spdx.json"
-release:
-  extra_files:
-    - glob: output/install.yaml
 changelog:
   use: github-native
 
