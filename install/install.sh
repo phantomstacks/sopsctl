@@ -87,8 +87,8 @@ setup_tmp() {
 
 # Find version from Github metadata
 get_release_version() {
-    if [[ -n "${FLUX_VERSION}" ]]; then
-      SUFFIX_URL="tags/v${FLUX_VERSION}"
+    if [[ -n "${SOPSCTL_VERSION}" ]]; then
+      SUFFIX_URL="tags/v${SOPSCTL_VERSION}"
     else
       SUFFIX_URL="latest"
     fi
