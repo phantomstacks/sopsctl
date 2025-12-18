@@ -1,20 +1,22 @@
 # Sopsctl
+> **Important!**
+> This project is currently in early development. The API and features may change significantly before a stable release. Use at your own risk.
 
 **Secure Configuration Management for Kubernetes with SOPS and Age Encryption**
 
-Sopsctl is a command-line tool that streamlines the management of encrypted Kubernetes secrets in GitOps workflows. It integrates SOPS (Secrets OPerationS), age encryption, and Kubernetes to provide a seamless experience for editing and managing encrypted configuration files alongside your deployment manifests.
+Sopsctl is a command-line tool that streamlines the management of encrypted Kubernetes secrets in GitOps workflows. It integrates SOPS (Secrets OPerationS), age encryption, and Kubernetes to provide a seamless experience for editing and managing encrypted secret files alongside your deployment manifests.
 
 The tool is invoked using the `sopsctl` command.
 
-## 🚀 Features
+## Features
 
-- **🔐 Age Encryption Integration**: Uses age keys for fast, modern encryption
-- **📝 SOPS Integration**: Full compatibility with SOPS for encrypted YAML/JSON files
-- **⚡ Kubernetes Native**: Seamlessly integrates with your existing Kubernetes clusters
-- **✏️ Interactive Editing**: Edit encrypted files directly with your preferred editor
-- **🔑 Key Management**: Store and manage encryption keys in `~/.sopsctl`
-- **🎯 GitOps Ready**: Keep encrypted secrets in the same repository as your deployment files
-- **🛡️ Secure Workflow**: Files are never stored unencrypted on disk during editing
+- **Age Encryption Integration**: Uses age keys for fast, modern encryption
+- **SOPS Integration**: Full compatibility with SOPS for encrypted YAML/JSON files
+- **Kubernetes Native**: Seamlessly integrates with your existing Kubernetes clusters
+- **Interactive Editing**: Edit encrypted files directly with your preferred editor
+- **Key Management**: Store and manage encryption keys in `~/.sopsctl`
+- **GitOps Ready**: Keep encrypted secrets in the same repository as your deployment files
+- **Secure Workflow**: Files are never stored unencrypted on disk during editing
 
 ## 📋 Prerequisites
 
