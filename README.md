@@ -26,7 +26,7 @@ Before using sopsctl, ensure you have:
 - **A kubernetes cluster with SOPS age keys** set up. Follow the [FluxCD SOPS guide](https://fluxcd.io/flux/guides/mozilla-sops/#encrypting-secrets-using-age) to create and store age keys in your cluster.
 
 ## 📦 Installation
-
+To be added.
 
 ## 🚀 Quick Start
 
@@ -44,20 +44,7 @@ sopsctl add-key --cluster=production
 # List stored keys
 sopsctl list-keys
 ```
-
-### 2. Create a SOPS Configuration
-
-Create a `.sops.yaml` file in your repository to define encryption rules:
-
-```yaml
-# .sops.yaml
-creation_rules:
-  - path_regex: .*.yaml
-    encrypted_regex: ^(data|stringData)$
-    age: age1qnswq576pku84s2wyw4kr59ywvvdzua6crtdz0sf0l9udnje6c5snqfc2d
-```
-
-### 3. Create and Manage Encrypted Secrets
+### 2. Create and Manage Encrypted Secrets
 
 ```bash
 # Create an encrypted secret from literal values
