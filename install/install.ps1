@@ -121,14 +121,14 @@ function Get-Hash {
     Get-FileFromUrl -Url $hashUrl -OutFile $TmpHash
 
     $hashContent = Get-Content $TmpHash
-    $expectedHash = $hashContent | Where-Object { $_ -match "sopsctl_${Version}_${OS}_${Arch}.tar.gz" }
+    $expectedHash = $hashContent | Where-Object { $_ -match "sopsctl_${Version}_${OS}_${Arch}.zip" }
 
     if ($expectedHash) {
         $hash = ($expectedHash -split '\s+')[0]
         Write-Info "Expected hash: $hash"
         return $hash
     } else {
-        Write-Fatal "Could not find hash for sopsctl_${Version}_${OS}_${Arch}.tar.gz"
+        Write-Fatal "Could not find hash for sopsctl_${Version}_${OS}_${Arch}.zip"
     }
 }
 
@@ -141,7 +141,7 @@ function Get-Binary {
         [string]$TmpBin
     )
 
-    $binUrl = "https://github.com/$GITHUB_REPO/releases/download/v$Version/sopsctl_${Version}_${OS}_${Arch}.tar.gz"
+    $binUrl = "https://github.com/$GITHUB_REPO/releases/download/v$Version/sopsctl_${Version}_${OS}_${Arch}.zip"
     Write-Info "Downloading binary from $binUrl"
     Get-FileFromUrl -Url $binUrl -OutFile $TmpBin
 }
@@ -181,7 +181,7 @@ function Install-Binary {
 
     Write-Info "Extracting binary"
 
-    # Extract tar.gz - requires tar.exe (available in Windows 10 1803+ and Windows Server 2019+)
+    # Extract zip - requires tar.exe (available in Windows 10 1803+ and Windows Server 2019+)
     if (Get-Command tar -ErrorAction SilentlyContinue) {
         $extractDir = Join-Path $TmpDir "extract"
         New-Item -ItemType Directory -Path $extractDir -Force | Out-Null
@@ -233,7 +233,7 @@ try {
     $tmpDir = New-TempDirectory
     $tmpMetadata = Join-Path $tmpDir "sopsctl.json"
     $tmpHash = Join-Path $tmpDir "sopsctl.hash"
-    $tmpBin = Join-Path $tmpDir "sopsctl.tar.gz"
+    $tmpBin = Join-Path $tmpDir "sopsctl.zip"
 
     try {
         # Get version
