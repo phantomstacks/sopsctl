@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+#Heavyly inspired by: fluxcd/flux2 install script
 set -e
 
 DEFAULT_BIN_DIR="/usr/local/bin"
@@ -98,9 +99,9 @@ get_release_version() {
     info "Downloading metadata ${METADATA_URL}"
     download "${TMP_METADATA}" "${METADATA_URL}"
 
-    VERSION_FLUX=$(grep '"tag_name":' "${TMP_METADATA}" | sed -E 's/.*"([^"]+)".*/\1/' | cut -c 2-)
-    if [[ -n "${VERSION_FLUX}" ]]; then
-        info "Using ${VERSION_FLUX} as release"
+    SOPSCTL_VERSION=$(grep '"tag_name":' "${TMP_METADATA}" | sed -E 's/.*"([^"]+)".*/\1/' | cut -c 2-)
+    if [[ -n "${SOPSCTL_VERSION}" ]]; then
+        info "Using ${SOPSCTL_VERSION} as release"
     else
         fatal "Unable to determine release version"
     fi
@@ -162,24 +163,20 @@ vercomp () {
 
 # Download hash from Github URL
 download_hash() {
-    HASH_URL="https://github.com/${GITHUB_REPO}/releases/download/v${VERSION_SOPSCTL}/sopsctl_${VERSION_SOPSCTL}_checksums.txt"
-    # NB: support the checksum filename format prior to v0.6.0
-    set +e
-    vercomp ${VERSION_SOPSCTL} 0.6.0
-    if [[ $? -eq 2 ]]; then
-        HASH_URL="https://github.com/${GITHUB_REPO}/releases/download/v${VERSION_SOPSCTL}/sopsctl2_${VERSION_SOPSCTL}_checksums.txt"
-    fi
-    set -e
+    HASH_URL="https://github.com/${GITHUB_REPO}/releases/download/v${SOPSCTL_VERSION}/sopsctl_${SOPSCTL_VERSION}_checksums.txt"
 
     info "Downloading hash ${HASH_URL}"
     download "${TMP_HASH}" "${HASH_URL}"
-    HASH_EXPECTED=$(grep " sopsctl_${VERSION_SOPSCTL}_${OS}_${ARCH}.tar.gz$" "${TMP_HASH}")
+    echo " sopsctl_${SOPSCTL_VERSION}_${OS}_${ARCH}.tar.gz$"
+    cat "${TMP_HASH}"
+    HASH_EXPECTED=$(grep " sopsctl_${SOPSCTL_VERSION}_${OS}_${ARCH}.tar.gz" "${TMP_HASH}")
     HASH_EXPECTED=${HASH_EXPECTED%%[[:blank:]]*}
+    echo "Expected hash: ${HASH_EXPECTED}"
 }
 
 # Download binary from Github URL
 download_binary() {
-    BIN_URL="https://github.com/${GITHUB_REPO}/releases/download/v${VERSION_SOPSCTL}/sopsctl_${VERSION_SOPSCTL}_${OS}_${ARCH}.tar.gz"
+    BIN_URL="https://github.com/${GITHUB_REPO}/releases/download/v${SOPSCTL_VERSION}/sopsctl_${SOPSCTL_VERSION}_${OS}_${ARCH}.tar.gz"
     info "Downloading binary ${BIN_URL}"
     download "${TMP_BIN}" "${BIN_URL}"
 }
