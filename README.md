@@ -26,7 +26,62 @@ Before using sopsctl, ensure you have:
 - **A kubernetes cluster with SOPS age keys** set up. Follow the [FluxCD SOPS guide](https://fluxcd.io/flux/guides/mozilla-sops/#encrypting-secrets-using-age) to create and store age keys in your cluster.
 
 ## 📦 Installation
-To be added.
+
+### Linux / macOS
+
+Install the latest version using the installation script:
+
+```bash
+curl -s https://raw.githubusercontent.com/phantomstacks/sopsctl/main/install/install.sh | sudo bash
+```
+
+Or install to a custom directory (no sudo required):
+
+```bash
+curl -s https://raw.githubusercontent.com/phantomstacks/sopsctl/main/install/install.sh | bash -s -- ~/.local/bin
+```
+
+Install a specific version:
+
+```bash
+export SOPSCTL_VERSION=1.0.0
+curl -s https://raw.githubusercontent.com/phantomstacks/sopsctl/main/install/install.sh | sudo bash
+```
+
+### Windows
+
+Install using PowerShell (run as Administrator or regular user):
+
+```powershell
+irm https://raw.githubusercontent.com/phantomstacks/sopsctl/main/install/install.ps1 | iex
+```
+
+Install a specific version:
+
+```powershell
+$env:Version = "1.0.0"
+irm https://raw.githubusercontent.com/phantomstacks/sopsctl/main/install/install.ps1 | iex
+```
+
+Install to a custom directory:
+
+```powershell
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/phantomstacks/sopsctl/main/install/install.ps1))) -BinDir "C:\tools\bin"
+```
+
+**Note:** Windows installation requires Windows 10 (version 1803+) or Windows Server 2019+ for the built-in `tar.exe` utility.
+
+### Verify Installation
+
+After installation, verify that sopsctl is working:
+
+```bash
+sopsctl --help
+```
+
+### Manual Installation
+
+You can also download pre-built binaries from the [releases page](https://github.com/phantomstacks/sopsctl/releases) and manually place them in your PATH.
 
 ## 🚀 Quick Start
 
