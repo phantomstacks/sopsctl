@@ -4,19 +4,24 @@
 
 **Secure Configuration Management for Kubernetes with SOPS and Age Encryption**
 
-Sopsctl is a command-line tool that streamlines the management of encrypted Kubernetes secrets in GitOps workflows. It integrates SOPS (Secrets OPerationS), age encryption, and Kubernetes to provide a seamless experience for editing and managing encrypted secret files alongside your deployment manifests.
+Sopsctl is a command-line tool that streamlines the management of encrypted Kubernetes secrets in GitOps workflows. It enables developers and DevOps engineers to securely create, edit, and manage secrets in a way that fits naturally into Git-based workflows when using Flux with Sops encrypted secrets stored in git repositories.
+
+## Why Sopsctl?
+Adding encrypted secrets to GitOps repositories gives many benefits, including version control, auditability, and collaboration.
+
+https://fluxcd.io/flux/guides/mozilla-sops/
+
+However, managing these secrets can be cumbersome requiring multiple tools and manual steps. When using Flux with SOPS and age encryption, users often need to juggle between `kubectl`, `sops`, and manual key management when editing and creating secrets. Sopsctl simplifies this process by providing a unified CLI that simplifies creating and editing secrets while makeing sure that no unencrypted data is checked into version control.
+
+
 
 The tool is invoked using the `sopsctl` command.
 
-## Features
-
-- **Age Encryption Integration**: Uses age keys for fast, modern encryption
-- **SOPS Integration**: Full compatibility with SOPS for encrypted YAML/JSON files
-- **Kubernetes Native**: Seamlessly integrates with your existing Kubernetes clusters
-- **Interactive Editing**: Edit encrypted files directly with your preferred editor
-- **Key Management**: Store and manage encryption keys in `~/.sopsctl`
-- **GitOps Ready**: Keep encrypted secrets in the same repository as your deployment files
-- **Secure Workflow**: Files are never stored unencrypted on disk during editing
+## 🌟 Features
+* **Create encrypted secrets easily:** Generate SOPS-encrypted Kubernetes secrets from files, literal values, or environment files with a single command.
+* **Edit secrets securely:** Edit encrypted secret files with automatic decryption and re-encryption, ensuring sensitive data does not get commited into GitOps repo.
+* **Edit individual secret properties in encrypted secret:** Modify specific fields within an encrypted secret without exposing the entire file.
+* **Edit encrypted encoded and encrypted secrets:** Seamlessly handle secrets that are both base64-encoded and SOPS-encrypted.
 
 ## 📋 Prerequisites
 
