@@ -446,10 +446,6 @@ go build -o sopsctl .
 go test ./...
 ```
 
-## 📄 License
-
-[License information to be added]
-
 ## 🔗 Related Projects
 
 - [SOPS](https://github.com/mozilla/sops) - Secrets OPerationS
