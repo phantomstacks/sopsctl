@@ -1,8 +1,4 @@
-# Sopsctl
-> **Important!**
-> This project is currently in early development. The API and features may change significantly before a stable release. Use at your own risk.
-
-**Secure Configuration Management for Kubernetes with SOPS and Age Encryption**
+**Secure Secret Management for SOPS encrypted secrets in FluxCD GitOps repositories**
 
 Sopsctl is a command-line tool that streamlines the management of encrypted Kubernetes secrets in GitOps workflows. It enables developers and DevOps engineers to securely create, edit, and manage secrets in a way that fits naturally into Git-based workflows when using Flux with Sops encrypted secrets stored in git repositories.
 
